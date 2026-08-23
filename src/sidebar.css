@@ -1,0 +1,10 @@
+@media (min-width: 641px) {
+  .app-shell { transition: grid-template-columns .25s; }
+  .app-shell.is-collapsed { grid-template-columns: 76px 1fr; }
+  .app-shell.is-collapsed .sidebar { width: 76px; }
+  .app-shell.is-collapsed .sidebar .brand > div:last-child,
+  .app-shell.is-collapsed .sidebar nav span,
+  .app-shell.is-collapsed .sidebar__footer span { display: none; }
+  .app-shell.is-collapsed .sidebar nav button,
+  .app-shell.is-collapsed .sidebar__footer button { justify-content: center; }
+}
