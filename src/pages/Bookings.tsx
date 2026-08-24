@@ -11,14 +11,7 @@ import {
   peso,
   phDate,
 } from "../types";
-import {
-  Button,
-  Card,
-  EmptyState,
-  Field,
-  Modal,
-  StatusBadge,
-} from "../components/ui";
+import { Button, Card, EmptyState, Modal, StatusBadge } from "../components/ui";
 import { Icon } from "../components/Icon";
 
 export function Bookings({
@@ -61,20 +54,19 @@ export function Bookings({
   const update = async (booking: Booking, values: Partial<Booking>) => {
     setSaving(true);
     setError("");
-    const { data, error: updateError } = await supabase
+    const { error: updateError } = await supabase
       .from("bookings")
       .update(values)
-      .eq("id", booking.id)
-      .select()
-      .single();
+      .eq("id", booking.id);
     if (updateError) setError(updateError.message);
     else {
+      const updatedBooking = { ...booking, ...values };
       setBookings((items) =>
         items.map((item) =>
-          item.id === booking.id ? (data as Booking) : item,
+          item.id === booking.id ? updatedBooking : item,
         ),
       );
-      setSelected(data as Booking);
+      setSelected(updatedBooking);
     }
     setSaving(false);
   };
@@ -360,17 +352,6 @@ export function Bookings({
               ))}
             </div>
           </div>
-          <Field label="Internal notes">
-            <textarea
-              value={selected.notes || ""}
-              onChange={(e) =>
-                setSelected({ ...selected, notes: e.target.value })
-              }
-              onBlur={() => update(selected, { notes: selected.notes })}
-              placeholder="Add notes for the studio team…"
-              rows={3}
-            />
-          </Field>
         </Modal>
       )}
       {cancelTarget && (
